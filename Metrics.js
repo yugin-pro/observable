@@ -4,14 +4,12 @@ export default class Metrics extends Map {
     this.database = database
   }
   async exe(metric, value = 'value') {
-    let context = this
     let m =  this.get(metric)
-    let aaa = 'sdf'
     let exeList = m.match(/(exe\(\w*\))/gm)
     
     if (typeof m == "string" && exeList && exeList.length) {
       for await (let element of exeList) {
-        let value = await context.exe(element.match(/\((\w+)\)/)[1]) 
+        let value = await this.exe(element.match(/\((\w+)\)/)[1]) 
         m = m.replace(element,value)
       }  
       return eval(m)
